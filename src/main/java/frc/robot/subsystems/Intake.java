@@ -3,21 +3,43 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
-    private boolean isOpen = false;
+
+    public enum SystemState {
+        IDLE,
+        OPEN,
+        CLOSE
+    }
+
+    private SystemState wantedState = SystemState.IDLE;
+    private SystemState currentState = SystemState.IDLE;
 
     public Intake() {
     }
 
     @Override
     public void periodic() {
-        System.out.println("intake is open: " + isOpen);
+        currentState = handleStateTransition();
+
+        switch (currentState) {
+            case IDLE:
+
+                System.out.println("Intake is IDLE");
+                break;
+
+            case OPEN:
+                System.out.println("Intake is OPEN");
+                break;
+            case CLOSE:
+                System.out.println("Intake is CLOSE");
+                break;
+        }
     }
 
-    public void openIntake() {
-        isOpen = true;
+    private SystemState handleStateTransition() {
+        return wantedState;
     }
 
-    public void closeIntake() {
-        isOpen = false;
+    public void setWantedState(SystemState newState) {
+        this.wantedState = newState;
     }
 }
