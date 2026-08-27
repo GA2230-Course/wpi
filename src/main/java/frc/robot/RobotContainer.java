@@ -7,18 +7,26 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
+import frc.robot.commands.SpinShooterWithTimeout;
+import frc.robot.commands.TakeAndScoreBall;
 import frc.robot.commands.OpenIntakeWithTimeout;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;  
+
 public class RobotContainer {
+  private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
+  private final CommandPS4Controller driverController = new CommandPS4Controller(0);
+
   public RobotContainer() {
     configureBindings();
+
   }
 
   private void configureBindings() {
-  }
+    driverController.cross().onTrue(new TakeAndScoreBall(intake, shooter, 3.0));  }
 
   public Command getAutonomousCommand() {
-    return new OpenIntakeWithTimeout(intake, 7.0);
+    return new TakeAndScoreBall(intake, shooter, 7.0);
   }
 }
- 

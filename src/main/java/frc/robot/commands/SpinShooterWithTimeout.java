@@ -1,23 +1,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
-import edu.wpi.first.wpilibj.Timer;
 
-public class OpenIntakeWithTimeout extends Command {
-    private final Intake intake;
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.Shooter;
+
+public class SpinShooterWithTimeout extends Command {
+    private final Shooter shooter;
     private final double timeout;
     private double startTime;
 
-    public OpenIntakeWithTimeout(Intake intake, double timeout) {
-        this.intake = intake;
+    public SpinShooterWithTimeout(Shooter shooter, double timeout) {
+        this.shooter = shooter;
         this.timeout = timeout;
-        addRequirements(intake);
+        addRequirements(shooter);
     }
 
     @Override
     public void initialize() {
-        intake.setWantedState(Intake.SystemState.OPEN);
+        shooter.startSpin();
         startTime = Timer.getFPGATimestamp();
     }
 
@@ -32,7 +33,6 @@ public class OpenIntakeWithTimeout extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intake.setWantedState(Intake.SystemState.CLOSE);
+        shooter.stopSpin();
     }
-
 }
